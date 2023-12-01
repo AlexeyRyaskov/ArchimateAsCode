@@ -1,0 +1,77 @@
+@startuml ArchAsCode
+!include <archimate/Archimate>
+'деятельность
+archimate #Business "Команда разработки" as Org.DevTeam <<business-role>>
+archimate #Business "Архитектурный комитет" as Org.EntArch <<business-role>>
+archimate #Business "Заказчик" as Customer <<business-role>>
+
+archimate #Business "(1) Анализ требований" as ReqAnalysis <<business-process>>
+archimate #Business "(2) Разработка концепции решения" as SoftwareConcept <<business-process>>
+archimate #Business "(3) Проектирование" as SoftwareDesign <<business-process>>
+archimate #Business "(4) Разработка" as SoftwareDevelopment <<business-process>>
+archimate #Business "(5) Развертывание" as SoftwareImplementation <<business-process>>
+archimate #Business "(6) Сдача-приемка" as SolutionAcceptance <<business-process>>
+archimate #Business "Согласование проекта\n решения" as DesignApprovement <<business-process>>
+archimate #Business "Руководство реализацией" as SoftwareDevGovernment <<business-process>>
+archimate #Business "(0) Формирвоание требований" as ReqMaking <<business-process>>
+archimate #Business "Согласование" as Approvement <<business-process>>
+
+
+archimate #Business "Требования заказчика" as Reqs <<business-product>>
+archimate #Business "Концепция решения" as ArchConcept <<business-product>>
+archimate #Business "Проектная документация" as DocOfDesign <<business-product>>
+archimate #Business "Программное обеспечение" as Software <<business-product>>
+archimate #Business "Рабочая документация" as UserDoc <<business-product>>
+archimate #Business "Программное обеспечение\n развернутое в среде исполнения" as ExecSoftware <<business-product>>
+archimate #Business "Реестр недостатков" as Bugs <<business-product>>
+archimate #Business "Технический долг" as Gap <<business-product>>
+archimate #Business "Строительные блоки" as Blocks <<business-product>>
+archimate #Business "Принципы интеграции ИС" as IntPrinciples <<business-product>>
+archimate #Business "Требования ИБ" as SecReq <<business-product>>
+
+
+Rel_Assignment(Org.DevTeam, ReqAnalysis, Назначен на)
+Rel_Assignment(Org.DevTeam, SoftwareDesign, Назначен на)
+Rel_Assignment(Org.DevTeam, SoftwareDevelopment, Назначен на)
+Rel_Assignment(Org.DevTeam, SoftwareImplementation, Назначен на)
+Rel_Assignment(Org.DevTeam, SolutionAcceptance, Назначен на)
+Rel_Assignment(Org.EntArch, DesignApprovement, Назначен на)
+Rel_Assignment(Org.EntArch, SoftwareDevGovernment, Назначен на)
+Rel_Assignment(Customer, Approvement, Назначен на)
+Rel_Assignment(Customer, ReqMaking, Назначен на)
+
+Rel_Triggering(ReqAnalysis, SoftwareConcept, Переход)
+Rel_Triggering(SoftwareConcept, SoftwareDesign, Переход)
+Rel_Triggering(SoftwareDesign, DesignApprovement, Переход)
+Rel_Triggering(DesignApprovement, SoftwareDevelopment, Переход)
+Rel_Triggering(SoftwareDevelopment, SoftwareImplementation, Переход)
+Rel_Triggering(SoftwareImplementation, SolutionAcceptance, Переход)
+Rel_Triggering(SoftwareConcept, Approvement, 1)
+Rel_Triggering(Approvement, SoftwareConcept, 2)
+Rel_Triggering(DesignApprovement, Approvement,1)
+Rel_Triggering(ReqMaking, ReqAnalysis, 2)
+
+
+Rel_Access_w(ReqMaking, Reqs, Создание)
+Rel_Access_w(SoftwareDesign, DocOfDesign, Создание)
+Rel_Access_w(SoftwareDevelopment, Software, Создание)
+Rel_Access_w(SoftwareDevelopment, UserDoc, Создание)
+Rel_Access_w(SoftwareImplementation, ExecSoftware, Создание)
+Rel_Access_w(DesignApprovement, Bugs, Создание)
+Rel_Access_w(SoftwareDevGovernment, Bugs, Создание)
+Rel_Access_w(SoftwareDevGovernment, Gap, Создание)
+Rel_Access_w(SolutionAcceptance, Bugs, Создание)
+
+
+Rel_Access_r(SoftwareDesign, Blocks, Использование)
+Rel_Access_r(SoftwareDesign, IntPrinciples, Использование)
+Rel_Access_r(SoftwareDesign, SecReq, Использование)
+Rel_Access_r(SoftwareDesign, Reqs, Использование)
+
+Rel_Access_r(SoftwareDevGovernment, ArchConcept, Использование)
+
+Org.DevTeam-[hidden]->ReqAnalysis
+Org.EntArch-[hidden]->ReqAnalysis
+Customer-[hidden]->ReqAnalysis
+
+@enduml

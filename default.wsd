@@ -1,4 +1,4 @@
-@startuml ArchimateAsCode
+@startuml ArchAsCode
 !include <archimate/Archimate>
 
 'деятельность
@@ -7,13 +7,14 @@ archimate #Business "Управление архитектурными\n пре�
 'связи
 Rel_Assignment(User, Process_1, Назначение)
 'прикладные компоненты
-archimate #Application "ArchimateAsCode" as App <<application-collaboration>>
+archimate #Application "Система управления\n архитектурой предприятия" as App <<application-collaboration>>
 archimate #Application "Редактор кода" as Editor <<application-component>>
 archimate #Application "Визуализатор кода" as Visualizer <<application-component>>
 archimate #Application "Реестр сущностей" as Registry <<application-component>>
 archimate #Application "Хранилище кода" as Storage <<application-component>>
 'прикладные сервисы
 archimate #Application "Создание\изменение\удаление\n представлений" as Svc_1 <<application-service>>
+
 'технологические компоненты
 archimate #Technology "VSCode" as TechEditor <<technology-system-software>>
 archimate #Technology "PlantUML" as TechVisualizer <<technology-system-software>>

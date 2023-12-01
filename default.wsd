@@ -1,0 +1,45 @@
+@startuml ArchimateAsCode
+!include <archimate/Archimate>
+
+'деятельность
+archimate #Business "Пользователь" as User <<business-role>>
+archimate #Business "Управление архитектурными\n представлениями" as Process_1 <<business-process>>
+'связи
+Rel_Assignment(User, Process_1, Назначение)
+'прикладные компоненты
+archimate #Application "ArchimateAsCode" as App <<application-collaboration>>
+archimate #Application "Редактор кода" as Editor <<application-component>>
+archimate #Application "Визуализатор кода" as Visualizer <<application-component>>
+archimate #Application "Реестр сущностей" as Registry <<application-component>>
+archimate #Application "Хранилище кода" as Storage <<application-component>>
+'прикладные сервисы
+archimate #Application "Создание\изменение\удаление\n представлений" as Svc_1 <<application-service>>
+'технологические компоненты
+archimate #Technology "VSCode" as TechEditor <<technology-system-software>>
+archimate #Technology "PlantUML" as TechVisualizer <<technology-system-software>>
+archimate #Technology "ElasticSearch" as TechRegistry <<technology-system-software>>
+archimate #Technology "GitLab" as TechStorage <<technology-system-software>>
+
+'связи компонентов
+Rel_Aggregation(App, Editor, Агрегация)
+Rel_Aggregation(App, Visualizer, Агрегация)
+Rel_Aggregation(App, Registry, Агрегация)
+Rel_Aggregation(App, Storage, Агрегация)
+Rel_Realization(App, Svc_1, Реализация)
+'вертикальные связи бизнес-приклад
+Rel_Serving(Svc_1, Process_1, Обслуживание)
+'вертикальные связи приклад-технологии
+Rel_Realization(TechEditor, Editor, Реализация)
+Rel_Realization(TechVisualizer, Visualizer, Реализация)
+Rel_Realization(TechRegistry, Registry, Реализация)
+Rel_Realization(TechStorage, Storage, Реализация)
+
+'расположение
+Process_1-[hidden]->Svc_1
+Svc_1-[hidden]->App
+Editor-[hidden]->TechEditor
+Visualizer-[hidden]->TechVisualizer
+Registry-[hidden]->TechRegistry
+Storage-[hidden]->TechStorage
+
+@enduml

@@ -1,5 +1,10 @@
 @startuml ArchAsCode
 !include <archimate/Archimate>
+
+sprite $bRole jar:archimate/business-role
+sprite $bProcess jar:archimate/business-process
+sprite $aProd jar:archimate/business-product
+
 'деятельность
 archimate #Business "Команда разработки" as Org.DevTeam <<business-role>>
 archimate #Business "Архитектурный комитет" as Org.EntArch <<business-role>>
@@ -11,7 +16,6 @@ archimate #Business "(3) Проектирование" as SoftwareDesign <<busin
 archimate #Business "(4) Разработка" as SoftwareDevelopment <<business-process>>
 archimate #Business "(5) Развертывание" as SoftwareImplementation <<business-process>>
 archimate #Business "(6) Сдача-приемка" as SolutionAcceptance <<business-process>>
-archimate #Business "Согласование проекта\n решения" as DesignApprovement <<business-process>>
 archimate #Business "Руководство реализацией" as SoftwareDevGovernment <<business-process>>
 archimate #Business "(0) Формирвоание требований" as ReqMaking <<business-process>>
 archimate #Business "Согласование" as Approvement <<business-process>>
@@ -30,26 +34,29 @@ archimate #Business "Принципы интеграции ИС" as IntPrinciple
 archimate #Business "Требования ИБ" as SecReq <<business-product>>
 
 
-Rel_Assignment(Org.DevTeam, ReqAnalysis, Назначен на)
-Rel_Assignment(Org.DevTeam, SoftwareDesign, Назначен на)
-Rel_Assignment(Org.DevTeam, SoftwareDevelopment, Назначен на)
+Rel_Assignment(Org.DevTeam, ReqAnalysis, Разбирается в том\n что хочет заказчик)
+Rel_Assignment(Org.DevTeam, SoftwareDesign, Создает\n проект)
+Rel_Assignment(Org.DevTeam, SoftwareDevelopment, Создает ПО\n и документацию)
 Rel_Assignment(Org.DevTeam, SoftwareImplementation, Назначен на)
-Rel_Assignment(Org.DevTeam, SolutionAcceptance, Назначен на)
-Rel_Assignment(Org.EntArch, DesignApprovement, Назначен на)
-Rel_Assignment(Org.EntArch, SoftwareDevGovernment, Назначен на)
-Rel_Assignment(Customer, Approvement, Назначен на)
+Rel_Assignment(Org.DevTeam, SolutionAcceptance, Сдает\n результат)
+Rel_Assignment(Org.EntArch, Approvement, Защищает интересы\n предприятия)
+Rel_Assignment(Org.EntArch, SoftwareDevGovernment, Контроллирует\n соответствеие)
+Rel_Assignment(Customer, Approvement, Защищает интересы\n заказчика)
 Rel_Assignment(Customer, ReqMaking, Назначен на)
+Rel_Assignment(Customer, SolutionAcceptance, Принимает\n результат)
 
 Rel_Triggering(ReqAnalysis, SoftwareConcept, Переход)
 Rel_Triggering(SoftwareConcept, SoftwareDesign, Переход)
-Rel_Triggering(SoftwareDesign, DesignApprovement, Переход)
-Rel_Triggering(DesignApprovement, SoftwareDevelopment, Переход)
+Rel_Triggering(SoftwareDesign, SoftwareDevelopment, Переход)
 Rel_Triggering(SoftwareDevelopment, SoftwareImplementation, Переход)
 Rel_Triggering(SoftwareImplementation, SolutionAcceptance, Переход)
 Rel_Triggering(SoftwareConcept, Approvement, 1)
 Rel_Triggering(Approvement, SoftwareConcept, 2)
-Rel_Triggering(DesignApprovement, Approvement,1)
-Rel_Triggering(ReqMaking, ReqAnalysis, 2)
+Rel_Triggering(SoftwareDesign, Approvement,1)
+Rel_Triggering(Approvement, SoftwareDesign,2)
+Rel_Triggering(SoftwareImplementation, Approvement, 1)
+Rel_Triggering(Approvement, SoftwareImplementation, 2)
+Rel_Triggering(ReqMaking, ReqAnalysis, Переход)
 
 
 Rel_Access_w(ReqMaking, Reqs, Создание)
@@ -57,10 +64,10 @@ Rel_Access_w(SoftwareDesign, DocOfDesign, Создание)
 Rel_Access_w(SoftwareDevelopment, Software, Создание)
 Rel_Access_w(SoftwareDevelopment, UserDoc, Создание)
 Rel_Access_w(SoftwareImplementation, ExecSoftware, Создание)
-Rel_Access_w(DesignApprovement, Bugs, Создание)
-Rel_Access_w(SoftwareDevGovernment, Bugs, Создание)
+Rel_Access_w(Approvement, Bugs, Изменение)
+Rel_Access_w(SoftwareDevGovernment, Bugs, Изменение)
 Rel_Access_w(SoftwareDevGovernment, Gap, Создание)
-Rel_Access_w(SolutionAcceptance, Bugs, Создание)
+Rel_Access_w(SolutionAcceptance, Bugs, Изменение)
 
 
 Rel_Access_r(SoftwareDesign, Blocks, Использование)
@@ -74,4 +81,15 @@ Org.DevTeam-[hidden]->ReqAnalysis
 Org.EntArch-[hidden]->ReqAnalysis
 Customer-[hidden]->ReqAnalysis
 
+legend left
+Легенда
+
+====
+<$bRole> :Роль
+====
+<$bProcess> :Бизнес-процесс (деятельность)
+====
+<$aProd> : Продукт деятельности
+
+endlegend
 @enduml

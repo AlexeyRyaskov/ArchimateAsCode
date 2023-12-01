@@ -1,5 +1,13 @@
 @startuml ArchAsCode
 !include <archimate/Archimate>
+skinparam rectangle<<behavior>> {
+	roundCorner 25
+}
+sprite $bRole jar:archimate/business-role
+sprite $bProcess jar:archimate/business-process
+sprite $aCollab jar:archimate/application-collaboration
+sprite $aComponent jar:archimate/application-component
+sprite $aTech jar:archimate/technology-system-software
 
 'деятельность
 archimate #Business "Пользователь" as User <<business-role>>
@@ -8,6 +16,7 @@ archimate #Business "Управление архитектурными\n пре�
 Rel_Assignment(User, Process_1, Назначение)
 'прикладные компоненты
 archimate #Application "Система управления\n архитектурой предприятия" as App <<application-collaboration>>
+archimate #Application "Портал архитектора" as Portal <<application-component>>
 archimate #Application "Редактор кода" as Editor <<application-component>>
 archimate #Application "Визуализатор кода" as Visualizer <<application-component>>
 archimate #Application "Реестр сущностей" as Registry <<application-component>>
@@ -16,12 +25,14 @@ archimate #Application "Хранилище кода" as Storage <<application-co
 archimate #Application "Создание\изменение\удаление\n представлений" as Svc_1 <<application-service>>
 
 'технологические компоненты
+archimate #Technology "PHP-FPM (runtime)" as TechPHP <<technology-system-software>>
 archimate #Technology "VSCode" as TechEditor <<technology-system-software>>
 archimate #Technology "PlantUML" as TechVisualizer <<technology-system-software>>
 archimate #Technology "ElasticSearch" as TechRegistry <<technology-system-software>>
 archimate #Technology "GitLab" as TechStorage <<technology-system-software>>
 
 'связи компонентов
+Rel_Aggregation(App, Portal, Агрегация)
 Rel_Aggregation(App, Editor, Агрегация)
 Rel_Aggregation(App, Visualizer, Агрегация)
 Rel_Aggregation(App, Registry, Агрегация)
@@ -34,7 +45,7 @@ Rel_Realization(TechEditor, Editor, Реализация)
 Rel_Realization(TechVisualizer, Visualizer, Реализация)
 Rel_Realization(TechRegistry, Registry, Реализация)
 Rel_Realization(TechStorage, Storage, Реализация)
-
+Rel_Realization(TechPHP, Portal, Реализация)
 'расположение
 Process_1-[hidden]->Svc_1
 Svc_1-[hidden]->App
@@ -42,5 +53,23 @@ Editor-[hidden]->TechEditor
 Visualizer-[hidden]->TechVisualizer
 Registry-[hidden]->TechRegistry
 Storage-[hidden]->TechStorage
+Portal-[hidden]->TechPHP
+
+
+legend left
+Легенда
+
+====
+<$bRole> :Роль
+====
+<$bProcess> :Бизнес-процесс (деятельность)
+====
+<$aCollab> : Прикладная система
+====
+<$aComponent> : Компонент прикладной системы
+====
+<$aTech> : Системное ПО
+
+endlegend
 
 @enduml
